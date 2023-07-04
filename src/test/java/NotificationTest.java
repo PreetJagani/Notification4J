@@ -14,4 +14,9 @@ public class NotificationTest {
         new NotificationManager().sayHello();
     }
 
+    @Test
+    public void test2() {
+        new NotificationManager().helloNotification("First Notification");
+    }
+
 }

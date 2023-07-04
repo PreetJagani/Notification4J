@@ -14,6 +14,8 @@ extern "C" {
  */
 JNIEXPORT void JNICALL Java_main_NotificationManager_sayHello(JNIEnv *, jobject);
 
+JNIEXPORT void JNICALL Java_main_NotificationManager_helloNotification(JNIEnv *env, jobject obj, jstring title);
+
 #ifdef __cplusplus
 }
 #endif

@@ -33,4 +33,6 @@ public class NotificationManager {
     }
 
     public native void sayHello();
+
+    public native void helloNotification(String message);
 }
