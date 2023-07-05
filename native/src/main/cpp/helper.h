@@ -16,3 +16,5 @@ std::wstring appName(JNIEnv *env);
 std::wstring appUserModelId(JNIEnv *env);
 
 WinToastTemplate::Duration getDurationEnum(jint duration);
+
+WinToastTemplate::AudioSystemFile getSoundEnum(wstring sound);

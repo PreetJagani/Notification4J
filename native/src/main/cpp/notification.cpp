@@ -52,36 +52,8 @@ void nativeLog(JNIEnv *env, char * message) {
 
 }
 
-// Implementation of the native method sayHello()
-JNIEXPORT void JNICALL Java_main_NotificationManager_sayHello(JNIEnv *, jobject) {
-   printf("Hello World from cpp!\n");
-   return;
-}
-
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_helloNotification(JNIEnv *env, jobject obj, jstring title)  {
-    WinToast::instance()->setAppName(appName(env));
-    WinToast::instance()->setAppUserModelId(appUserModelId(env));
-    if (!WinToast::instance()->initialize()) {
-        nativeLog(env, "Error, your system in not compatible!");
-    }
-
-    WinToastTemplate templ(WinToastTemplate::Text01);
-    	templ.setTextField(Java_To_WStr(env, title), WinToastTemplate::FirstLine);
-//    	templ.setTextField(Java_To_WStr(env, sound), WinToastTemplate::SecondLine);
-        templ.setDuration(WinToastTemplate::Duration::Short);
-//        templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
-        templ.setExpiration(7000);
-
-        if (WinToast::instance()->showToast(templ, new CustomHandler(env)) < 0) {
-            nativeLog(env, "Could not launch your toast notification!");
-        	return;
-        }
-    return;
-}
-
-JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint duration)  {
+Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint duration, jstring sound)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
@@ -92,7 +64,7 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
     templ.setTextField(Java_To_WStr(env, title), WinToastTemplate::FirstLine);
     templ.setTextField(Java_To_WStr(env, subtitle), WinToastTemplate::SecondLine);
     templ.setDuration(getDurationEnum(duration));
-//        templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
+    templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
     templ.setExpiration(7000);
 
     if (WinToast::instance()->showToast(templ, new CustomHandler(env)) < 0) {

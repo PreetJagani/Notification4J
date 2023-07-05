@@ -1,5 +1,6 @@
 import main.NotificationDuration;
 import main.NotificationManager;
+import main.NotificationSound;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,19 +14,9 @@ public class NotificationTest {
     }
 
     @Test
-    public void test() {
-        new NotificationManager().sayHello();
-    }
-
-    @Test
-    public void test2() {
-        new NotificationManager().helloNotification("First Notification");
-    }
-
-    @Test
-    public void test3() throws InterruptedException {
+    public void test1() throws InterruptedException {
 //        Semaphore s = new Semaphore(0);
-        new NotificationManager().postNotification("Title", "Subtitle 1", NotificationDuration.System);
+        new NotificationManager().postNotification("Title", "Subtitle 1", NotificationDuration.System, NotificationSound.Mail);
 //        new NotificationManager().postNotification("Title", "Subtitle 2", NotificationDuration.Short);
 //        new NotificationManager().postNotification("Title", "Subtitle 3", NotificationDuration.Long);
 //        s.acquire();

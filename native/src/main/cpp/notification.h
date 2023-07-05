@@ -12,11 +12,8 @@ extern "C" {
  * Method:    sayHello
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_main_NotificationManager_sayHello(JNIEnv *, jobject);
 
-JNIEXPORT void JNICALL Java_main_NotificationManager_helloNotification(JNIEnv *env, jobject obj, jstring title);
-
-JNIEXPORT void JNICALL Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint duration);
+JNIEXPORT void JNICALL Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint duration, jstring sound);
 
 #ifdef __cplusplus
 }
