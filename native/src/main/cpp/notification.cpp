@@ -8,56 +8,73 @@
 using namespace WinToastLib;
 using namespace std;
 
+static JavaVM* mVm = NULL;
+
+jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+    mVm = vm;
+    JNIEnv* env;
+
+    if ((vm)->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) {
+        return -1;
+    }
+    return JNI_VERSION_1_6;
+}
+
+void javaLog(JNIEnv *env, char * message) {
+    if((mVm)->AttachCurrentThread((void **)&env, NULL) == JNI_OK) {
+        cout << "Attach success" <<endl;
+
+        jstring _message = (env)->NewStringUTF(message);
+
+        jclass cls = (env) -> FindClass("main/NotificationManager");
+        jmethodID midNativeLog = (env) -> GetStaticMethodID(cls, "javaLog", "(Ljava/lang/String;)V");
+        (env) -> CallStaticVoidMethod(cls, midNativeLog, _message);
+    }
+}
+
 class CustomHandler : public IWinToastHandler {
 public:
-
+    JNIEnv *env;
     CustomHandler(JNIEnv *env) {
-
-    }
-
-    CustomHandler() {
+        this -> env = env;
     }
 
     void toastActivated() const {
-        std::wcout << L"The user clicked in this toast" << std::endl;
+        javaLog(env, "The user clicked in this toast");
     }
 
     void toastActivated(int actionIndex) const {
-        std::wcout << L"The user clicked on action #" << actionIndex << std::endl;
+        javaLog(env, "The user clicked on action #");
     }
 
     void toastDismissed(WinToastDismissalReason state) const {
         switch (state) {
         case UserCanceled:
-            std::wcout << L"The user dismissed this toast" << std::endl;
+            javaLog(env, "The user dismissed this toast");
             break;
         case TimedOut:
-            std::wcout << L"The toast has timed out" << std::endl;
+            javaLog(env, "The toast has timed out");
             break;
         case ApplicationHidden:
-            std::wcout << L"The application hid the toast using ToastNotifier.hide()" << std::endl;
+            javaLog(env, "The application hid the toast using ToastNotifier.hide()");
             break;
         default:
-            std::wcout << L"Toast not activated" << std::endl;
+            javaLog(env, "Toast not activated");
             break;
         }
     }
 
     void toastFailed() const {
-        std::wcout << L"Error showing current toast" << std::endl;
+        javaLog(env, "Error showing current toast");
     }
 };
-
-void nativeLog(JNIEnv *env, char * message) {
-
-}
 
 JNIEXPORT void JNICALL
 Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
-        nativeLog(env, "Error, your system in not compatible!");
+        javaLog(env, "Error, your system in not compatible!");
     }
 
     WinToastTemplate templ(WinToastTemplate::ImageAndText02);
@@ -70,8 +87,13 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
     templ.setExpiration(7000);
 
     if (WinToast::instance()->showToast(templ, new CustomHandler(env)) < 0) {
-        nativeLog(env, "Could not launch your toast notification!");
+        javaLog(env, "Could not launch your toast notification!");
         return;
     }
     return;
+}
+
+JNIEXPORT void JNICALL
+Java_main_NotificationManager_clearNotifications(JNIEnv *env, jobject obj) {
+    WinToast::instance()->clear();
 }

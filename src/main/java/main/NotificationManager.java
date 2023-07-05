@@ -50,12 +50,13 @@ public class NotificationManager {
 
     private native void postNotification(String title, String subTitle, String avatarPath, String sound);
 
+    public native void clearNotifications();
+
+    public static void javaLog(String message) {
+        System.out.println("[JNI] " + message);
+    }
+
 
     // actions, reply1
-
-    // static
     // temppath
-    // native log
-
-    // clear notification
 }
