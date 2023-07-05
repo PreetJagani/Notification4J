@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()V
  */
 
-JNIEXPORT void JNICALL Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jint duration, jstring sound);
+JNIEXPORT void JNICALL Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound);
 
 #ifdef __cplusplus
 }

@@ -53,7 +53,7 @@ void nativeLog(JNIEnv *env, char * message) {
 }
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jint duration, jstring sound)  {
+Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
@@ -63,7 +63,8 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
     WinToastTemplate templ(WinToastTemplate::ImageAndText02);
     templ.setTextField(Java_To_WStr(env, title), WinToastTemplate::FirstLine);
     templ.setTextField(Java_To_WStr(env, subtitle), WinToastTemplate::SecondLine);
-    templ.setDuration(getDurationEnum(duration));
+// TODO: fix this templ.setDuration(getDurationEnum(duration));
+    templ.setDuration(WinToastTemplate::Duration::Short);
     templ.setImagePath(Java_To_WStr(env, avatarPath));
     templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
     templ.setExpiration(7000);
