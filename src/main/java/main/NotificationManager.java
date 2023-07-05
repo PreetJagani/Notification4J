@@ -7,9 +7,13 @@ import java.nio.file.Files;
 
 public class NotificationManager {
 
-    private String applicationName;
+    private static String applicationName;
+    private static String appUserModelId;
 
-    public static void init() {
+
+    public static void init(String applicationName, String appUserModelId) {
+        NotificationManager.applicationName = applicationName;
+        NotificationManager.appUserModelId = appUserModelId;
         loadLibrary("/native.dll");
     }
 
@@ -32,7 +36,38 @@ public class NotificationManager {
         }
     }
 
+    public static String getApplicationName() {
+        return applicationName;
+    }
+
+    public static String getAppUserModelId() {
+        return appUserModelId;
+    }
+
     public native void sayHello();
 
     public native void helloNotification(String message);
+
+    public void postNotification(String title, String subTitle, NotificationDuration duration) {
+        postNotification(title, subTitle, duration.value);
+    }
+
+    private native void postNotification(String title, String subTitle, int duration);
+
+
+    // duration -> done
+    // notification with title, sub -> done
+    // template -> not working
+
+    // actions, reply1
+    // audio
+    // expiration
+    // image path
+
+
+    // static
+    // temppath
+    // native log
+
+    // clear notification
 }
