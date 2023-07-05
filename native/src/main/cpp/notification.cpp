@@ -53,17 +53,18 @@ void nativeLog(JNIEnv *env, char * message) {
 }
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint duration, jstring sound)  {
+Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jint duration, jstring sound)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
         nativeLog(env, "Error, your system in not compatible!");
     }
 
-    WinToastTemplate templ(WinToastTemplate::Text02);
+    WinToastTemplate templ(WinToastTemplate::ImageAndText02);
     templ.setTextField(Java_To_WStr(env, title), WinToastTemplate::FirstLine);
     templ.setTextField(Java_To_WStr(env, subtitle), WinToastTemplate::SecondLine);
     templ.setDuration(getDurationEnum(duration));
+    templ.setImagePath(Java_To_WStr(env, avatarPath));
     templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
     templ.setExpiration(7000);
 

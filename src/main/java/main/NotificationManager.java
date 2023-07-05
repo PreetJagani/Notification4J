@@ -44,22 +44,14 @@ public class NotificationManager {
         return appUserModelId;
     }
 
-    public void postNotification(String title, String subTitle, NotificationDuration duration, NotificationSound sound) {
-        postNotification(title, subTitle, duration.value, sound.value);
+    public void postNotification(String title, String subTitle, String avatarPath, NotificationDuration duration, NotificationSound sound) {
+        postNotification(title, subTitle, avatarPath, duration.value, sound.value);
     }
 
-    private native void postNotification(String title, String subTitle, int duration, String sound);
+    private native void postNotification(String title, String subTitle, String avatarPath, int duration, String sound);
 
 
-    // duration -> done
-    // notification with title, sub -> done
-    // template -> not working
-    // audio -> done
-
-    // expiration
-    // image path
     // actions, reply1
-
 
     // static
     // temppath
