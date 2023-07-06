@@ -9,12 +9,25 @@ public class NotificationManager {
 
     private static String applicationName;
     private static String appUserModelId;
-
+    public static NotificationClickListener listener;
+    public static LogHandler logHandler;
 
     public static void init(String applicationName, String appUserModelId) {
         NotificationManager.applicationName = applicationName;
         NotificationManager.appUserModelId = appUserModelId;
         loadLibrary("/native.dll");
+    }
+
+    private static NotificationManager instance;
+
+    private NotificationManager() {
+    }
+
+    public static synchronized NotificationManager getInstance() {
+        if (instance == null) {
+            instance = new NotificationManager();
+        }
+        return instance;
     }
 
     //TODO: Make only one temp and load it from there
@@ -36,11 +49,11 @@ public class NotificationManager {
         }
     }
 
-    public static String getApplicationName() {
+    private static String getApplicationName() {
         return applicationName;
     }
 
-    public static String getAppUserModelId() {
+    private static String getAppUserModelId() {
         return appUserModelId;
     }
 
@@ -78,18 +91,30 @@ public class NotificationManager {
 
     private native void postNotification(String title, String subTitle, int identifier, String avatarPath, String sound, String[] actions);
 
-    public static void handleNotificationClick(int identifier) {
-        System.out.println("[JNI] Clicked " + identifier);
+    private static void handleNotificationClick(int identifier) {
+        if (listener != null) {
+            listener.onNotificationClicked(identifier);
+        } else {
+            System.out.println("[JNI] Clicked " + identifier);
+        }
     }
 
-    public static void handleNotificationActionClick(int identifier, int actionIndex) {
-        System.out.println("[JNI] Clicked " + identifier + " index " + actionIndex);
+    private static void handleNotificationActionClick(int identifier, int actionIndex) {
+        if (listener != null) {
+            listener.onNotificationActionClicked(identifier, actionIndex);
+        } else {
+            System.out.println("[JNI] Clicked " + identifier + " index " + actionIndex);
+        }
     }
 
     public native void clearNotifications();
 
-    public static void javaLog(String message) {
-        System.out.println("[JNI] " + message);
+    private static void javaLog(String message) {
+        if (logHandler != null) {
+            logHandler.log(message);
+        } else {
+            System.out.println("[JNI] " + message);
+        }
     }
 
 }
