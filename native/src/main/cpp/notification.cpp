@@ -35,16 +35,30 @@ void javaLog(JNIEnv *env, char * message) {
 class CustomHandler : public IWinToastHandler {
 public:
     JNIEnv *env;
-    CustomHandler(JNIEnv *env) {
+    jint identifier;
+    CustomHandler(JNIEnv *env, jint identifier) {
         this -> env = env;
+        this -> identifier = identifier;
     }
 
     void toastActivated() const {
-        javaLog(env, "The user clicked in this toast");
+        if ((mVm)->AttachCurrentThread((void **)&env, NULL) == JNI_OK) {
+            cout << "Attach success" <<endl;
+        }
+        jclass cls = (env) -> FindClass("main/NotificationManager");
+        jmethodID handler = (env) -> GetStaticMethodID(cls, "handleNotificationClick", "(I)V");
+        (env) -> CallStaticVoidMethod(cls, handler, identifier);
+        (mVm) -> DetachCurrentThread();
     }
 
     void toastActivated(int actionIndex) const {
-        javaLog(env, "The user clicked on action #");
+        if((mVm)->AttachCurrentThread((void **)&env, NULL) == JNI_OK) {
+            cout << "Attach success" <<endl;
+        }
+        jclass cls = (env) -> FindClass("main/NotificationManager");
+        jmethodID actionHandler = (env) -> GetStaticMethodID(cls, "handleNotificationActionClick", "(II)V");
+        (env) -> CallStaticVoidMethod(cls, actionHandler, identifier, actionIndex);
+        (mVm) -> DetachCurrentThread();
     }
 
     void toastDismissed(WinToastDismissalReason state) const {
@@ -70,7 +84,7 @@ public:
 };
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound, jobjectArray actions)  {
+Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint identifier, jstring avatarPath, jstring sound, jobjectArray actions)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
@@ -93,7 +107,7 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
         templ.addAction(Java_To_WStr(env, action));
     }
 
-    if (WinToast::instance()->showToast(templ, new CustomHandler(env)) < 0) {
+    if (WinToast::instance()->showToast(templ, new CustomHandler(env, identifier)) < 0) {
         javaLog(env, "Could not launch your toast notification!");
         return;
     }

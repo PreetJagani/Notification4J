@@ -44,11 +44,19 @@ public class NotificationManager {
         return appUserModelId;
     }
 
-    public void postNotification(String title, String subTitle, String avatarPath, NotificationSound sound, String[] actions) {
-        postNotification(title, subTitle, avatarPath, sound.value, actions);
+    public void postNotification(String title, String subTitle, int identifier, String avatarPath, NotificationSound sound, String[] actions) {
+        postNotification(title, subTitle, identifier, avatarPath, sound.value, actions);
     }
 
-    private native void postNotification(String title, String subTitle, String avatarPath, String sound, String[] actions);
+    private native void postNotification(String title, String subTitle, int identifier, String avatarPath, String sound, String[] actions);
+
+    public static void handleNotificationClick(int identifier) {
+        System.out.println("[JNI] Clicked " + identifier);
+    }
+
+    public static void handleNotificationActionClick(int identifier, int actionIndex) {
+        System.out.println("[JNI] Clicked " + identifier + " index " + actionIndex);
+    }
 
     public native void clearNotifications();
 
@@ -56,7 +64,4 @@ public class NotificationManager {
         System.out.println("[JNI] " + message);
     }
 
-
-    // actions, reply1
-    // temppath
 }
