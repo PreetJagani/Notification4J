@@ -44,11 +44,11 @@ public class NotificationManager {
         return appUserModelId;
     }
 
-    public void postNotification(String title, String subTitle, String avatarPath, NotificationSound sound) {
-        postNotification(title, subTitle, avatarPath, sound.value);
+    public void postNotification(String title, String subTitle, String avatarPath, NotificationSound sound, String[] actions) {
+        postNotification(title, subTitle, avatarPath, sound.value, actions);
     }
 
-    private native void postNotification(String title, String subTitle, String avatarPath, String sound);
+    private native void postNotification(String title, String subTitle, String avatarPath, String sound, String[] actions);
 
     public native void clearNotifications();
 

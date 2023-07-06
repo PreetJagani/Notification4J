@@ -70,7 +70,7 @@ public:
 };
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound)  {
+Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound, jobjectArray actions)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
@@ -85,6 +85,13 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
     templ.setImagePath(Java_To_WStr(env, avatarPath));
     templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
     templ.setExpiration(7000);
+
+    int actionCount = env->GetArrayLength(actions);
+
+    for (int i = 0; i < actionCount; i++) {
+        jstring action = (jstring) (env->GetObjectArrayElement(actions, i));
+        templ.addAction(Java_To_WStr(env, action));
+    }
 
     if (WinToast::instance()->showToast(templ, new CustomHandler(env)) < 0) {
         javaLog(env, "Could not launch your toast notification!");

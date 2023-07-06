@@ -14,7 +14,7 @@ extern "C" {
  */
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound);
+Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jstring avatarPath, jstring sound, jobjectArray actions);
 
 JNIEXPORT void JNICALL
 Java_main_NotificationManager_clearNotifications(JNIEnv *env, jobject obj);
