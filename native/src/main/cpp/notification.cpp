@@ -91,12 +91,17 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
         javaLog(env, "Error, your system in not compatible!");
     }
 
-    WinToastTemplate templ(WinToastTemplate::ImageAndText02);
+    WinToastTemplate templ;
+    if (avatarPath == NULL) {
+        templ = WinToastTemplate::Text02;
+    } else {
+        templ = WinToastTemplate::ImageAndText02;
+        templ.setImagePath(Java_To_WStr(env, avatarPath));
+    }
     templ.setTextField(Java_To_WStr(env, title), WinToastTemplate::FirstLine);
     templ.setTextField(Java_To_WStr(env, subtitle), WinToastTemplate::SecondLine);
 // TODO: fix this templ.setDuration(getDurationEnum(duration));
     templ.setDuration(WinToastTemplate::Duration::Short);
-    templ.setImagePath(Java_To_WStr(env, avatarPath));
     templ.setAudioPath(getSoundEnum(Java_To_WStr(env,sound)));
     templ.setExpiration(7000);
 

@@ -44,6 +44,34 @@ public class NotificationManager {
         return appUserModelId;
     }
 
+    public void postNotification(String title, String subTitle, int identifier) {
+        postNotification(title, subTitle, identifier, null, NotificationSound.Default, new String[]{});
+    }
+
+    public void postNotification(String title, String subTitle, int identifier, String avatarPath) {
+        postNotification(title, subTitle, identifier, avatarPath, NotificationSound.Default, new String[]{});
+    }
+
+    public void postNotification(String title, String subTitle, int identifier, NotificationSound sound) {
+        postNotification(title, subTitle, identifier, null, sound, new String[]{});
+    }
+
+    public void postNotification(String title, String subTitle, int identifier, String[] actions) {
+        postNotification(title, subTitle, identifier, null, NotificationSound.Default, actions);
+    }
+
+    public void postNotification(String title, String subTitle, int identifier, String avatarPath, NotificationSound sound) {
+        postNotification(title, subTitle, identifier, avatarPath, sound, new String[]{});
+    }
+
+    public void postNotification(String title, String subTitle, int identifier, String avatarPath, String[] actions) {
+        postNotification(title, subTitle, identifier, avatarPath, NotificationSound.Default, actions);
+    }
+
+    public void postNotification(String title, String subTitle, int identifier, NotificationSound sound, String[] actions) {
+        postNotification(title, subTitle, identifier, null, sound, actions);
+    }
+
     public void postNotification(String title, String subTitle, int identifier, String avatarPath, NotificationSound sound, String[] actions) {
         postNotification(title, subTitle, identifier, avatarPath, sound.value, actions);
     }
