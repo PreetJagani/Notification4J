@@ -15,7 +15,49 @@ Java-based Native Notification Library for Windows
 - [License](#license)
 
 ## Installation
-[Instructions on how to install your library. Include any prerequisites or dependencies, if applicable.]
+### Installation
+
+### Gradle
+Add it in your root `build.gradle` at the end of repositories:
+
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Add the following dependency to your project's `build.gradle` file:
+
+```groovy
+dependencies {
+     implementation 'com.github.PreetJagani:Notification4J:v1.0.0'   
+}
+```
+
+### Maven
+Add the JitPack repository to your build file
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+Add the dependency
+
+```xml
+<dependency>
+    <groupId>com.github.PreetJagani</groupId>
+    <artifactId>Notification4J</artifactId>
+    <version>v1.0.0</version>
+</dependency>
+```
 
 ## Features
 [Highlight the key features and capabilities of your notification library.]
