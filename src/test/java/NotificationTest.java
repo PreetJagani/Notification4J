@@ -34,6 +34,7 @@ public class NotificationTest {
         NotificationManager.getInstance().postNotification("First Notification",
                 "Hello, World!", 1, "C:\\Users\\preet\\Downloads\\381C6E81-9F96-4620-A55B-FF91D5F082BB.png",
                 NotificationSound.Mail, new String[]{"Get Started"});
+
 //        new NotificationManager().postNotification("Title", "Subtitle 2", NotificationDuration.Short);
 //        new NotificationManager().postNotification("Title", "Subtitle 3", NotificationDuration.Long);
         s.acquire();
