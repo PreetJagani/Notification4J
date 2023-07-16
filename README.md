@@ -15,7 +15,6 @@ Notification4J is a Java wrapper for the [WinToast](https://github.com/mohabouje
 - [License](#license)
 
 ## Installation
-### Installation
 
 ### Gradle
 Add it in your root `build.gradle` at the end of repositories:
@@ -143,7 +142,7 @@ NotificationManager.getInstance().clearNotifications();
 
 
 ## Examples
-// quick start link
+For detailed examples on how to integrate and use the notification library, please refer to the [Notification4J QuickStart repository](https://github.com/PreetJagani/Notification4J-QuickStart).
 
 ## Contributing
 
