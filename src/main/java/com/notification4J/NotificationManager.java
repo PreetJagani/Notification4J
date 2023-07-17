@@ -1,9 +1,8 @@
 package com.notification4J;
 
 import java.io.File;
-import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 
 public class NotificationManager {
 
@@ -30,22 +29,13 @@ public class NotificationManager {
         return instance;
     }
 
-    //TODO: Make only one temp and load it from there
     private static void loadLibrary(String name) {
         URL url = NotificationManager.class.getResource(name);
-        if (url != null) {
-            try {
-                File tmpDir = Files.createTempDirectory("Notification.native").toFile();
-                tmpDir.deleteOnExit();
-                File nativeLibTmpFile = new File(tmpDir, name);
-                nativeLibTmpFile.deleteOnExit();
-                try (InputStream in = url.openStream()) {
-                    Files.copy(in, nativeLibTmpFile.toPath());
-                }
-                System.load(nativeLibTmpFile.getAbsolutePath());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            File nativeLibTmpFile = new File(url.toURI());
+            System.load(nativeLibTmpFile.getAbsolutePath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 
@@ -71,10 +61,10 @@ public class NotificationManager {
     /**
      * Posts a notification with the specified title, subtitle, identifier, and avatar.
      *
-     * @param title       The title of the notification.
-     * @param subTitle    The subtitle of the notification.
-     * @param identifier  The unique identifier for the notification, used for determining notification actions.
-     * @param avatarPath  The file path to the avatar image for the notification.
+     * @param title      The title of the notification.
+     * @param subTitle   The subtitle of the notification.
+     * @param identifier The unique identifier for the notification, used for determining notification actions.
+     * @param avatarPath The file path to the avatar image for the notification.
      */
     public void postNotification(String title, String subTitle, int identifier, String avatarPath) {
         postNotification(title, subTitle, identifier, avatarPath, NotificationSound.Default, new String[]{});
@@ -107,11 +97,11 @@ public class NotificationManager {
     /**
      * Posts a notification with the specified title, subtitle, identifier, avatar, and sound.
      *
-     * @param title       The title of the notification.
-     * @param subTitle    The subtitle of the notification.
-     * @param identifier  The unique identifier for the notification, used for determining notification actions.
-     * @param avatarPath  The file path to the avatar image for the notification (optional).
-     * @param sound       The sound to be played for the notification.
+     * @param title      The title of the notification.
+     * @param subTitle   The subtitle of the notification.
+     * @param identifier The unique identifier for the notification, used for determining notification actions.
+     * @param avatarPath The file path to the avatar image for the notification (optional).
+     * @param sound      The sound to be played for the notification.
      */
     public void postNotification(String title, String subTitle, int identifier, String avatarPath, NotificationSound sound) {
         postNotification(title, subTitle, identifier, avatarPath, sound, new String[]{});
@@ -120,11 +110,11 @@ public class NotificationManager {
     /**
      * Posts a notification with the specified title, subtitle, identifier, avatar, and actions.
      *
-     * @param title       The title of the notification.
-     * @param subTitle    The subtitle of the notification.
-     * @param identifier  The unique identifier for the notification, used for determining notification actions.
-     * @param avatarPath  The file path to the avatar image for the notification (optional).
-     * @param actions     An array of strings representing the actions to be included in the notification.
+     * @param title      The title of the notification.
+     * @param subTitle   The subtitle of the notification.
+     * @param identifier The unique identifier for the notification, used for determining notification actions.
+     * @param avatarPath The file path to the avatar image for the notification (optional).
+     * @param actions    An array of strings representing the actions to be included in the notification.
      */
     public void postNotification(String title, String subTitle, int identifier, String avatarPath, String[] actions) {
         postNotification(title, subTitle, identifier, avatarPath, NotificationSound.Default, actions);
@@ -133,11 +123,11 @@ public class NotificationManager {
     /**
      * Posts a notification with the specified title, subtitle, identifier, sound, and actions.
      *
-     * @param title       The title of the notification.
-     * @param subTitle    The subtitle of the notification.
-     * @param identifier  The unique identifier for the notification, used for determining notification actions.
-     * @param sound       The sound to be played for the notification.
-     * @param actions     An array of strings representing the actions to be included in the notification.
+     * @param title      The title of the notification.
+     * @param subTitle   The subtitle of the notification.
+     * @param identifier The unique identifier for the notification, used for determining notification actions.
+     * @param sound      The sound to be played for the notification.
+     * @param actions    An array of strings representing the actions to be included in the notification.
      */
     public void postNotification(String title, String subTitle, int identifier, NotificationSound sound, String[] actions) {
         postNotification(title, subTitle, identifier, null, sound, actions);
@@ -146,12 +136,12 @@ public class NotificationManager {
     /**
      * Posts a notification with the specified title, subtitle, identifier, avatar, sound, and actions.
      *
-     * @param title       The title of the notification.
-     * @param subTitle    The subtitle of the notification.
-     * @param identifier  The unique identifier for the notification, used for determining notification actions.
-     * @param avatarPath  The file path to the avatar image for the notification (optional).
-     * @param sound       The sound to be played for the notification.
-     * @param actions     An array of strings representing the actions to be included in the notification.
+     * @param title      The title of the notification.
+     * @param subTitle   The subtitle of the notification.
+     * @param identifier The unique identifier for the notification, used for determining notification actions.
+     * @param avatarPath The file path to the avatar image for the notification (optional).
+     * @param sound      The sound to be played for the notification.
+     * @param actions    An array of strings representing the actions to be included in the notification.
      */
     public void postNotification(String title, String subTitle, int identifier, String avatarPath, NotificationSound sound, String[] actions) {
         postNotification(title, subTitle, identifier, avatarPath, sound.value, actions);
