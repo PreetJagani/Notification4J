@@ -14,10 +14,10 @@ extern "C" {
  */
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint identifier, jstring avatarPath, jstring sound, jobjectArray actions);
+Java_com_notification4J_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint identifier, jstring avatarPath, jstring sound, jobjectArray actions);
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_clearNotifications(JNIEnv *env, jobject obj);
+Java_com_notification4J_NotificationManager_clearNotifications(JNIEnv *env, jobject obj);
 
 #ifdef __cplusplus
 }

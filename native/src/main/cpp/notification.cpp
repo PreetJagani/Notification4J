@@ -26,7 +26,7 @@ void javaLog(JNIEnv *env, char * message) {
 
         jstring _message = (env)->NewStringUTF(message);
 
-        jclass cls = (env) -> FindClass("main/NotificationManager");
+        jclass cls = (env) -> FindClass("com/notification4J/NotificationManager");
         jmethodID midNativeLog = (env) -> GetStaticMethodID(cls, "javaLog", "(Ljava/lang/String;)V");
         (env) -> CallStaticVoidMethod(cls, midNativeLog, _message);
     }
@@ -45,7 +45,7 @@ public:
         if ((mVm)->AttachCurrentThread((void **)&env, NULL) == JNI_OK) {
             cout << "Attach success" <<endl;
         }
-        jclass cls = (env) -> FindClass("main/NotificationManager");
+        jclass cls = (env) -> FindClass("com/notification4J/NotificationManager");
         jmethodID handler = (env) -> GetStaticMethodID(cls, "handleNotificationClick", "(I)V");
         (env) -> CallStaticVoidMethod(cls, handler, identifier);
         (mVm) -> DetachCurrentThread();
@@ -55,7 +55,7 @@ public:
         if((mVm)->AttachCurrentThread((void **)&env, NULL) == JNI_OK) {
             cout << "Attach success" <<endl;
         }
-        jclass cls = (env) -> FindClass("main/NotificationManager");
+        jclass cls = (env) -> FindClass("com/notification4J/NotificationManager");
         jmethodID actionHandler = (env) -> GetStaticMethodID(cls, "handleNotificationActionClick", "(II)V");
         (env) -> CallStaticVoidMethod(cls, actionHandler, identifier, actionIndex);
         (mVm) -> DetachCurrentThread();
@@ -84,7 +84,7 @@ public:
 };
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint identifier, jstring avatarPath, jstring sound, jobjectArray actions)  {
+Java_com_notification4J_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring title, jstring subtitle, jint identifier, jstring avatarPath, jstring sound, jobjectArray actions)  {
     WinToast::instance()->setAppName(appName(env));
     WinToast::instance()->setAppUserModelId(appUserModelId(env));
     if (!WinToast::instance()->initialize()) {
@@ -120,6 +120,6 @@ Java_main_NotificationManager_postNotification(JNIEnv *env, jobject obj, jstring
 }
 
 JNIEXPORT void JNICALL
-Java_main_NotificationManager_clearNotifications(JNIEnv *env, jobject obj) {
+Java_com_notification4J_NotificationManager_clearNotifications(JNIEnv *env, jobject obj) {
     WinToast::instance()->clear();
 }

@@ -1,6 +1,6 @@
-import main.NotificationClickListener;
-import main.NotificationManager;
-import main.NotificationSound;
+import com.notification4J.NotificationClickListener;
+import com.notification4J.NotificationManager;
+import com.notification4J.NotificationSound;
 import org.junit.Before;
 import org.junit.Test;
 

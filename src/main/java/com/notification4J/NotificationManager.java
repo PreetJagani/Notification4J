@@ -1,4 +1,4 @@
-package main;
+package com.notification4J;
 
 import java.io.File;
 import java.io.InputStream;

@@ -14,14 +14,14 @@ std::wstring Java_To_WStr(JNIEnv *env, jstring string) {
 }
 
 std::wstring appName(JNIEnv *env) {
-    jclass cls = (env) -> FindClass("main/NotificationManager");
+    jclass cls = (env) -> FindClass("com/notification4J/NotificationManager");
     jmethodID appNameMethod = (env) -> GetStaticMethodID(cls, "getApplicationName", "()Ljava/lang/String;");
     jstring str = (jstring) (env) -> CallStaticObjectMethod(cls, appNameMethod);
     return Java_To_WStr(env, str);
 }
 
 std::wstring appUserModelId(JNIEnv *env) {
-    jclass cls = (env) -> FindClass("main/NotificationManager");
+    jclass cls = (env) -> FindClass("com/notification4J/NotificationManager");
     jmethodID appNameMethod = (env) -> GetStaticMethodID(cls, "getAppUserModelId", "()Ljava/lang/String;");
     jstring str = (jstring) (env) -> CallStaticObjectMethod(cls, appNameMethod);
     return Java_To_WStr(env, str);
