@@ -1,8 +1,9 @@
 package com.notification4J;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class NotificationManager {
 
@@ -14,6 +15,7 @@ public class NotificationManager {
     public static void init(String applicationName, String appUserModelId) {
         NotificationManager.applicationName = applicationName;
         NotificationManager.appUserModelId = appUserModelId;
+        deletePreviousTempFiles();
         loadLibrary("/native.dll");
     }
 
@@ -31,12 +33,48 @@ public class NotificationManager {
 
     private static void loadLibrary(String name) {
         URL url = NotificationManager.class.getResource(name);
-        try {
-            File nativeLibTmpFile = new File(url.toURI());
-            System.load(nativeLibTmpFile.getAbsolutePath());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        if (url != null) {
+            try {
+                File tmpDir = Files.createTempDirectory(applicationName + ".notification4J").toFile();
+                tmpDir.deleteOnExit();
+                File nativeLibTmpFile = new File(tmpDir, name);
+                nativeLibTmpFile.deleteOnExit();
+                try (InputStream in = url.openStream()) {
+                    Files.copy(in, nativeLibTmpFile.toPath());
+                }
+                System.load(nativeLibTmpFile.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private static void deletePreviousTempFiles() {
+        String temp = System.getProperty("java.io.tmpdir");
+        if (temp != null) {
+            File file = new File(temp);
+            for (File f : file.listFiles()) {
+                if (f.getName().startsWith(applicationName + ".notification4J")) {
+                    deleteFile(f);
+                }
+            }
+        }
+    }
+
+    private static void deleteFile(File file) {
+        if (!file.exists()) {
+            return;
+        }
+        if (file.isDirectory()) {
+            for (File subFile : file.listFiles()) {
+                if (subFile.isDirectory()) {
+                    deleteFile(subFile);
+                } else {
+                    subFile.delete();
+                }
+            }
+        }
+        file.delete();
     }
 
     private static String getApplicationName() {
