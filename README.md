@@ -140,14 +140,9 @@ To clear all notifications, you can simply call the `clearNotifications()` metho
 NotificationManager.getInstance().clearNotifications();
 ```
 
-
 ## Examples
 For detailed examples on how to integrate and use the notification library, please refer to the [Notification4J QuickStart repository](https://github.com/PreetJagani/Notification4J-QuickStart).
 
-## Contributing
-
-
 ## License
 
-
-## Contact
+[MIT License](LICENSE)
